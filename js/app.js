@@ -96,6 +96,12 @@ class App {
 
     document.getElementById('prevMonth').addEventListener('click', () => this.calendar.changeMonth(-1));
     document.getElementById('nextMonth').addEventListener('click', () => this.calendar.changeMonth(1));
+    document.getElementById('calendarGrid').addEventListener('click', (event) => {
+      const dayButton = event.target.closest('[data-calendar-day]');
+      if (dayButton) {
+        this.calendar.selectDate(dayButton.dataset.date);
+      }
+    });
     document.querySelectorAll('[data-filter]').forEach((btn) => {
       btn.addEventListener('click', () => this.search.setFilter(btn.dataset.filter));
     });
@@ -113,7 +119,7 @@ class App {
     this.ui.setState(this.state);
     this.ui.renderDashboard(this.state);
     this.ui.renderJournal(this.state);
-    this.ui.renderCalendar(this.state);
+    this.ui.renderCalendar(this.state, this.calendar.currentDate, this.calendar.selectedDate);
     this.ui.renderStatistics(this.state);
     this.ui.renderSettings(this.state);
     this.ui.updateStorageUsed(this.storage.estimateSize());

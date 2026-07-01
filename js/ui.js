@@ -69,12 +69,14 @@ export class UIController {
     });
   }
 
-  renderCalendar(state, currentDate = new Date()) {
+  renderCalendar(state, currentDate = new Date(), selectedDate = new Date()) {
     const grid = document.getElementById('calendarGrid');
     const label = document.getElementById('calendarMonthLabel');
     const details = document.getElementById('calendarDetails');
+    const detailHeading = document.getElementById('calendarDetailHeading');
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
+    const selectedIso = selectedDate.toISOString().split('T')[0];
     label.textContent = currentDate.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
 
     const firstDay = new Date(year, month, 1);
@@ -87,18 +89,26 @@ export class UIController {
     while (days.length % 7 !== 0) days.push('');
 
     grid.innerHTML = days.map((day) => {
-      if (!day) return '<div class="day-cell"></div>';
+      if (!day) return '<div class="day-cell day-cell--empty"></div>';
       const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const hasEntry = state.entries.some((entry) => entry.createdAt.startsWith(iso));
       const hasMood = state.moods.some((entry) => entry.date.startsWith(iso));
-      const current = new Date().toISOString().split('T')[0] === `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      return `<div class="day-cell ${current ? 'current' : ''} ${hasEntry ? 'has-entry' : ''} ${hasMood ? 'has-mood' : ''}">${day}</div>`;
+      const current = new Date().toISOString().split('T')[0] === iso;
+      const selected = selectedIso === iso;
+      return `<button class="day-cell ${current ? 'current' : ''} ${selected ? 'selected' : ''} ${hasEntry ? 'has-entry' : ''} ${hasMood ? 'has-mood' : ''}" type="button" data-calendar-day data-date="${iso}" aria-label="Select ${iso}">${day}</button>`;
     }).join('');
 
-    const detailEntries = state.entries.filter((entry) => entry.createdAt.startsWith(`${year}-${String(month + 1).padStart(2, '0')}`));
-    details.innerHTML = detailEntries.length
-      ? detailEntries.slice(0, 5).map((entry) => `<div class="entry-card"><strong>${entry.title}</strong><p class="muted">${entry.content.slice(0, 80)}...</p></div>`).join('')
-      : '<div class="empty-state">No entries for this month yet.</div>';
+    const dayEntries = state.entries.filter((entry) => entry.createdAt.startsWith(selectedIso));
+    const dayMoods = state.moods.filter((entry) => entry.date.startsWith(selectedIso));
+    detailHeading.textContent = `Highlights for ${selectedDate.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}`;
+    if (dayEntries.length || dayMoods.length) {
+      details.innerHTML = [
+        ...dayEntries.slice(0, 3).map((entry) => `<div class="entry-card"><strong>${entry.title}</strong><p class="muted">${entry.content.slice(0, 80)}${entry.content.length > 80 ? '…' : ''}</p></div>`),
+        ...dayMoods.slice(0, 3).map((mood) => `<div class="mood-card"><strong>${mood.emoji} ${mood.mood}</strong><p class="muted">${mood.notes || 'No notes.'}</p></div>`)
+      ].join('');
+    } else {
+      details.innerHTML = '<div class="empty-state">No entries or moods for this day yet.</div>';
+    }
   }
 
   renderStatistics(state) {

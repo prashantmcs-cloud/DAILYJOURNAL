@@ -176,9 +176,18 @@
 .calendar-toolbar,
 .checkbox-row {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.calendar-toolbar {
+  margin-bottom: 6px;
+}
+
+.calendar-toolbar h3 {
+  margin: 0;
+  font-size: 1rem;
 }
 
 .search-input,
@@ -283,19 +292,45 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 8px;
+  gap: 4px;
 }
 
 .day-cell {
-  padding: 10px;
-  min-height: 70px;
-  border-radius: 12px;
+  padding: 3px;
+  min-height: 42px;
+  border-radius: 10px;
   background: var(--surface-muted);
   border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.day-cell:hover {
+  transform: translateY(-1px);
+}
+
+.day-cell:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 .day-cell.current {
   outline: 2px solid var(--primary);
+}
+
+.day-cell.selected {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+}
+
+.day-cell.day-cell--empty {
+  cursor: default;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .day-cell.has-entry {

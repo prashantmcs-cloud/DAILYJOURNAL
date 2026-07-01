@@ -50,12 +50,17 @@
 
 @media (max-width: 576px) {
   .calendar-grid {
-    gap: 6px;
+    gap: 3px;
   }
 
   .day-cell {
-    min-height: 55px;
-    padding: 6px;
-    font-size: 0.86rem;
+    min-height: 36px;
+    padding: 2px;
+    font-size: 0.72rem;
+    border-radius: 8px;
+  }
+
+  .calendar-toolbar {
+    margin-bottom: 6px;
   }
 }
