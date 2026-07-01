@@ -1,0 +1,38 @@
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.nav-btn:hover,
+.btn:hover,
+.icon-button:hover,
+.entry-card:hover,
+.stat-card:hover,
+.mood-card:hover {
+  transform: translateY(-2px);
+}
+
+.hero-card,
+.card,
+.entry-card,
+.stat-card,
+.mood-card,
+.modal-card,
+.toast {
+  animation: fadeUp 280ms ease both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

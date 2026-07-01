@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A modern daily journal and mood tracker with local storage." />
+    <title>Reflect Journal</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/utilities.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">R</div>
+          <div>
+            <p class="eyebrow">Daily Journal</p>
+            <h1>Reflect</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <div class="date-pill" id="currentDate" aria-live="polite"></div>
+          <button id="themeToggle" class="icon-button" type="button" aria-label="Toggle theme">🌙</button>
+          <button id="newEntryButton" class="btn btn-primary" type="button">+ New Entry</button>
+        </div>
+      </header>
+
+      <div class="layout">
+        <aside class="sidebar">
+          <nav class="nav-list" aria-label="Primary navigation">
+            <button class="nav-btn active" data-view="dashboard" type="button">Dashboard</button>
+            <button class="nav-btn" data-view="journal" type="button">Journal</button>
+            <button class="nav-btn" data-view="calendar" type="button">Calendar</button>
+            <button class="nav-btn" data-view="statistics" type="button">Statistics</button>
+            <button class="nav-btn" data-view="settings" type="button">Settings</button>
+          </nav>
+
+          <section class="sidebar-card">
+            <h2>Quick actions</h2>
+            <p>Capture the moment, reflect on your mood, and keep your streak alive.</p>
+            <button id="sidebarNewEntry" class="btn btn-secondary" type="button">Write today's note</button>
+            <div class="storage-pill" id="storageUsed">Storage: 0 KB</div>
+          </section>
+        </aside>
+
+        <main id="main-content" class="main-content">
+          <section id="dashboardView" class="view active" aria-labelledby="dashboardHeading">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Welcome back</p>
+                <h2 id="dashboardHeading">Your daily reflection hub</h2>
+              </div>
+            </div>
+            <div class="hero-card">
+              <div>
+                <p class="eyebrow" id="greetingText">Good morning</p>
+                <h3 id="heroTitle">Let your day unfold with intention.</h3>
+                <p id="heroSubtitle">Capture your thoughts, track your mood, and revisit your growth.</p>
+              </div>
+              <div class="hero-stats" id="dashboardStats"></div>
+            </div>
+            <div class="grid grid-2">
+              <section class="card">
+                <div class="card-header">
+                  <h3>Mood summary</h3>
+                  <span class="badge" id="moodBadge">Balanced</span>
+                </div>
+                <div id="moodSummary"></div>
+                <div id="moodPicker" class="chip-row"></div>
+              </section>
+              <section class="card">
+                <div class="card-header">
+                  <h3>Weekly mood chart</h3>
+                  <span class="badge subtle">Last 7 days</span>
+                </div>
+                <div id="weeklyChart" class="chart-list"></div>
+              </section>
+            </div>
+            <div class="grid grid-2">
+              <section class="card">
+                <div class="card-header">
+                  <h3>Recent journal entries</h3>
+                  <button class="text-button" id="viewJournalButton" type="button">Open journal</button>
+                </div>
+                <div id="recentEntries" class="stack"></div>
+              </section>
+              <section class="card">
+                <div class="card-header">
+                  <h3>Recent mood logs</h3>
+                </div>
+                <div id="recentMoods" class="stack"></div>
+              </section>
+            </div>
+          </section>
+
+          <section id="journalView" class="view" aria-labelledby="journalHeading">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Journal</p>
+                <h2 id="journalHeading">Write and organize your thoughts</h2>
+              </div>
+              <button id="journalNewEntry" class="btn btn-primary" type="button">+ New Entry</button>
+            </div>
+            <div class="card search-card">
+              <div class="search-row">
+                <label class="sr-only" for="searchInput">Search entries</label>
+                <input id="searchInput" class="search-input" type="search" placeholder="Search by title, content, mood, or tags" />
+                <select id="sortSelect" class="select-input" aria-label="Sort entries">
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="mood">Mood</option>
+                </select>
+              </div>
+              <div class="filter-row" id="filterRow">
+                <button class="chip active" data-filter="all" type="button">All</button>
+                <button class="chip" data-filter="favorites" type="button">Favorites</button>
+                <button class="chip" data-filter="pinned" type="button">Pinned</button>
+              </div>
+            </div>
+            <div id="journalEntriesList" class="stack"></div>
+          </section>
+
+          <section id="calendarView" class="view" aria-labelledby="calendarHeading">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Calendar</p>
+                <h2 id="calendarHeading">Timeline of your reflections</h2>
+              </div>
+            </div>
+            <div class="card">
+              <div class="calendar-toolbar">
+                <button id="prevMonth" class="icon-button" type="button" aria-label="Previous month">←</button>
+                <h3 id="calendarMonthLabel"></h3>
+                <button id="nextMonth" class="icon-button" type="button" aria-label="Next month">→</button>
+              </div>
+              <div id="calendarGrid" class="calendar-grid"></div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h3 id="calendarDetailHeading">Highlights</h3>
+              </div>
+              <div id="calendarDetails" class="stack"></div>
+            </div>
+          </section>
+
+          <section id="statisticsView" class="view" aria-labelledby="statisticsHeading">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Statistics</p>
+                <h2 id="statisticsHeading">Patterns at a glance</h2>
+              </div>
+            </div>
+            <div id="statsGrid" class="stats-grid"></div>
+            <div class="card">
+              <div class="card-header">
+                <h3>Mood distribution</h3>
+              </div>
+              <div id="moodDistribution" class="chart-list"></div>
+            </div>
+          </section>
+
+          <section id="settingsView" class="view" aria-labelledby="settingsHeading">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Settings</p>
+                <h2 id="settingsHeading">Customize your workspace</h2>
+              </div>
+            </div>
+            <div class="grid grid-2">
+              <section class="card">
+                <div class="card-header">
+                  <h3>Appearance</h3>
+                </div>
+                <label class="field">
+                  <span>Theme</span>
+                  <select id="themeSelect" class="select-input">
+                    <option value="system">System</option>
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Font size</span>
+                  <input id="fontSizeRange" type="range" min="14" max="20" value="16" />
+                </label>
+                <label class="checkbox-row">
+                  <input id="animationsToggle" type="checkbox" checked />
+                  <span>Enable animations</span>
+                </label>
+              </section>
+              <section class="card">
+                <div class="card-header">
+                  <h3>Data</h3>
+                </div>
+                <button id="exportJson" class="btn btn-secondary" type="button">Export JSON</button>
+                <button id="exportTxt" class="btn btn-secondary" type="button">Export TXT</button>
+                <button id="exportMarkdown" class="btn btn-secondary" type="button">Export Markdown</button>
+                <input id="importFile" class="sr-only" type="file" accept="application/json" />
+                <button id="importBtn" class="btn btn-secondary" type="button">Import JSON</button>
+                <button id="resetData" class="btn btn-danger" type="button">Reset data</button>
+              </section>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="entryModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-header">
+          <h3 id="modalTitle">New journal entry</h3>
+          <button id="closeModal" class="icon-button" type="button" aria-label="Close">✕</button>
+        </div>
+        <form id="entryForm" class="entry-form">
+          <input id="entryId" type="hidden" />
+          <label class="field">
+            <span>Title</span>
+            <input id="entryTitle" name="title" required />
+          </label>
+          <label class="field">
+            <span>Content</span>
+            <textarea id="entryContent" name="content" rows="8" required></textarea>
+          </label>
+          <label class="field">
+            <span>Mood</span>
+            <select id="entryMood" name="mood" class="select-input"></select>
+          </label>
+          <label class="field">
+            <span>Tags</span>
+            <input id="entryTags" name="tags" placeholder="e.g. work, gratitude" />
+          </label>
+          <div class="modal-actions">
+            <button class="btn btn-secondary" id="cancelEntry" type="button">Cancel</button>
+            <button class="btn btn-primary" type="submit">Save entry</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
