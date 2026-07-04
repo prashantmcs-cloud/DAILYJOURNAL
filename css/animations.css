@@ -1,4 +1,16 @@
+:root.reduce-motion, :root.reduce-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  :root.reduce-motion, :root.reduce-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -24,6 +36,22 @@
 .modal-card,
 .toast {
   animation: fadeUp 280ms ease both;
+}
+
+.sidebar-card {
+  animation: fadeUp 280ms ease 80ms both;
+}
+
+.stat-card {
+  animation-delay: 40ms;
+}
+
+.entry-card {
+  animation-delay: 60ms;
+}
+
+.mood-card {
+  animation-delay: 80ms;
 }
 
 @keyframes fadeUp {

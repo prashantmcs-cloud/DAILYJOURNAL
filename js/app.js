@@ -40,6 +40,13 @@ class App {
     document.getElementById('sidebarNewEntry').addEventListener('click', () => this.journal.openModal());
     document.getElementById('viewJournalButton').addEventListener('click', () => this.showView('journal'));
     document.getElementById('journalNewEntry').addEventListener('click', () => this.journal.openModal());
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    if (sidebarToggle && sidebar) {
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('sidebar-hidden');
+      });
+    }
 
     document.getElementById('themeToggle').addEventListener('click', () => this.theme.toggle());
     document.addEventListener('click', (event) => {
@@ -118,7 +125,7 @@ class App {
     this.statistics.setState(this.state);
     this.ui.setState(this.state);
     this.ui.renderDashboard(this.state);
-    this.ui.renderJournal(this.state);
+    this.ui.renderJournal(this.state, this.search.query, this.search.filter, this.search.sort);
     this.ui.renderCalendar(this.state, this.calendar.currentDate, this.calendar.selectedDate);
     this.ui.renderStatistics(this.state);
     this.ui.renderSettings(this.state);

@@ -27,12 +27,13 @@
         <div class="topbar-actions">
           <div class="date-pill" id="currentDate" aria-live="polite"></div>
           <button id="themeToggle" class="icon-button" type="button" aria-label="Toggle theme">🌙</button>
+          <button id="sidebarToggle" class="icon-button mobile-only" type="button" aria-label="Toggle sidebar">☰</button>
           <button id="newEntryButton" class="btn btn-primary" type="button">+ New Entry</button>
         </div>
       </header>
 
       <div class="layout">
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
           <nav class="nav-list" aria-label="Primary navigation">
             <button class="nav-btn active" data-view="dashboard" type="button">Dashboard</button>
             <button class="nav-btn" data-view="journal" type="button">Journal</button>

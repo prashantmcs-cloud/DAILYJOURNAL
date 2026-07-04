@@ -6,6 +6,10 @@ export class UIController {
     this.state = { entries: [], moods: [], settings: {} };
   }
 
+  escapeHtml(str) {
+    return String(str).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&apos;', '"': '&quot;' })[char]);
+  }
+
   setState(state) {
     this.state = state;
   }
@@ -31,7 +35,7 @@ export class UIController {
 
     const latestMood = moods[0]?.mood || 'Good';
     document.getElementById('moodBadge').textContent = latestMood;
-    document.getElementById('moodSummary').innerHTML = `<div class="entry-card"><p class="muted">Latest mood logged: <strong>${latestMood}</strong></p><p>${moods[0]?.notes || 'No mood notes yet.'}</p></div>`;
+    document.getElementById('moodSummary').innerHTML = `<div class="entry-card"><p class="muted">Latest mood logged: <strong>${this.escapeHtml(latestMood)}</strong></p><p>${this.escapeHtml(moods[0]?.notes || 'No mood notes yet.')}</p></div>`;
 
     document.getElementById('weeklyChart').innerHTML = this.renderWeeklyChart(moods);
     document.getElementById('recentEntries').innerHTML = this.renderEntries(entries.slice(0, 3));
@@ -76,7 +80,9 @@ export class UIController {
     const detailHeading = document.getElementById('calendarDetailHeading');
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-    const selectedIso = selectedDate.toISOString().split('T')[0];
+    const toLocalIso = (date) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+    const selectedIso = toLocalIso(selectedDate);
+    const currentIso = toLocalIso(new Date());
     label.textContent = currentDate.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
 
     const firstDay = new Date(year, month, 1);
@@ -93,7 +99,7 @@ export class UIController {
       const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const hasEntry = state.entries.some((entry) => entry.createdAt.startsWith(iso));
       const hasMood = state.moods.some((entry) => entry.date.startsWith(iso));
-      const current = new Date().toISOString().split('T')[0] === iso;
+      const current = currentIso === iso;
       const selected = selectedIso === iso;
       return `<button class="day-cell ${current ? 'current' : ''} ${selected ? 'selected' : ''} ${hasEntry ? 'has-entry' : ''} ${hasMood ? 'has-mood' : ''}" type="button" data-calendar-day data-date="${iso}" aria-label="Select ${iso}">${day}</button>`;
     }).join('');
@@ -103,8 +109,8 @@ export class UIController {
     detailHeading.textContent = `Highlights for ${selectedDate.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}`;
     if (dayEntries.length || dayMoods.length) {
       details.innerHTML = [
-        ...dayEntries.slice(0, 3).map((entry) => `<div class="entry-card"><strong>${entry.title}</strong><p class="muted">${entry.content.slice(0, 80)}${entry.content.length > 80 ? '…' : ''}</p></div>`),
-        ...dayMoods.slice(0, 3).map((mood) => `<div class="mood-card"><strong>${mood.emoji} ${mood.mood}</strong><p class="muted">${mood.notes || 'No notes.'}</p></div>`)
+        ...dayEntries.slice(0, 3).map((entry) => `<div class="entry-card"><strong>${this.escapeHtml(entry.title)}</strong><p class="muted">${this.escapeHtml(entry.content.slice(0, 80))}${entry.content.length > 80 ? '…' : ''}</p></div>`),
+        ...dayMoods.slice(0, 3).map((mood) => `<div class="mood-card"><strong>${mood.emoji} ${this.escapeHtml(mood.mood)}</strong><p class="muted">${this.escapeHtml(mood.notes || 'No notes.')}</p></div>`)
       ].join('');
     } else {
       details.innerHTML = '<div class="empty-state">No entries or moods for this day yet.</div>';
@@ -117,7 +123,7 @@ export class UIController {
     const total = entries.length;
     const favoriteCount = entries.filter((entry) => entry.favorite).length;
     const pinnedCount = entries.filter((entry) => entry.pinned).length;
-    const words = entries.reduce((sum, entry) => sum + entry.content.split(/\s+/).filter(Boolean).length, 0);
+    const words = entries.reduce((sum, entry) => sum + (entry.content || '').split(/\s+/).filter(Boolean).length, 0);
     const averageWords = total ? Math.round(words / total) : 0;
     const moodCounts = moods.reduce((acc, mood) => {
       acc[mood.mood] = (acc[mood.mood] || 0) + 1;
@@ -181,13 +187,13 @@ export class UIController {
       <article class="entry-card ${entry.pinned ? 'pinned' : ''}">
         <div class="entry-meta">
           <div>
-            <strong>${entry.title}</strong>
+            <strong>${this.escapeHtml(entry.title)}</strong>
             <p class="muted">${new Date(entry.createdAt).toLocaleString()}</p>
           </div>
-          <span class="badge">${entry.mood}</span>
+          <span class="badge">${this.escapeHtml(entry.mood)}</span>
         </div>
-        <p>${entry.content.slice(0, 140)}${entry.content.length > 140 ? '…' : ''}</p>
-        <div class="badge-row">${(entry.tags || []).map((tag) => `<span class="tag">${tag}</span>`).join('')}</div>
+        <p>${this.escapeHtml(entry.content.slice(0, 140))}${entry.content.length > 140 ? '…' : ''}</p>
+        <div class="badge-row">${(entry.tags || []).map((tag) => `<span class="tag">${this.escapeHtml(tag)}</span>`).join('')}</div>
         <div class="entry-actions">
           <div class="badge-row">
             <button class="chip" type="button" data-action="toggleFavorite" data-id="${entry.id}">★ Favorite</button>
@@ -208,10 +214,10 @@ export class UIController {
     return entries.map((entry) => `
       <article class="entry-card">
         <div class="entry-meta">
-          <strong>${entry.title}</strong>
-          <span class="badge">${entry.mood}</span>
+          <strong>${this.escapeHtml(entry.title)}</strong>
+          <span class="badge">${this.escapeHtml(entry.mood)}</span>
         </div>
-        <p class="muted">${entry.content.slice(0, 70)}${entry.content.length > 70 ? '…' : ''}</p>
+        <p class="muted">${this.escapeHtml(entry.content.slice(0, 70))}${entry.content.length > 70 ? '…' : ''}</p>
       </article>
     `).join('');
   }
@@ -223,10 +229,10 @@ export class UIController {
     return moods.map((mood) => `
       <article class="mood-card">
         <div class="entry-meta">
-          <strong>${mood.emoji} ${mood.mood}</strong>
+          <strong>${mood.emoji} ${this.escapeHtml(mood.mood)}</strong>
           <span class="badge">${new Date(mood.date).toLocaleDateString()}</span>
         </div>
-        <p class="muted">${mood.notes || 'No notes.'}</p>
+        <p class="muted">${this.escapeHtml(mood.notes || 'No notes.')}</p>
       </article>
     `).join('');
   }

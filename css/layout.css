@@ -25,12 +25,15 @@
   display: grid;
   grid-template-columns: 260px 1fr;
   gap: 24px;
+  align-items: start;
 }
 
 .sidebar {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  position: sticky;
+  top: 24px;
 }
 
 .main-content {
@@ -39,6 +42,7 @@
 
 .view {
   display: none;
+  animation: fadeIn 300ms ease;
 }
 
 .view.active {
@@ -50,6 +54,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .grid {
@@ -59,4 +65,9 @@
 
 .grid-2 {
   grid-template-columns: 1fr 1fr;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }

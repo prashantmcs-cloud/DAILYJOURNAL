@@ -29,6 +29,7 @@
   background: transparent;
   padding: 0;
   color: var(--primary);
+  font-weight: 500;
 }
 
 .muted {
@@ -36,9 +37,10 @@
 }
 
 .empty-state {
-  padding: 20px;
+  padding: 24px;
   text-align: center;
   border-radius: 16px;
   background: var(--surface-muted);
   color: var(--muted);
+  border: 1px dashed var(--border);
 }

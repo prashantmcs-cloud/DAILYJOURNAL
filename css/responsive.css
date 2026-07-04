@@ -7,6 +7,7 @@
 
   .sidebar {
     order: 2;
+    position: static;
   }
 
   .nav-list {
@@ -15,6 +16,14 @@
 
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mobile-only {
+    display: inline-flex;
+  }
+
+  .sidebar.sidebar-hidden {
+    display: none;
   }
 }
 
@@ -33,6 +42,7 @@
     width: 100%;
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: 8px;
   }
 
   .grid-2 {
@@ -45,6 +55,21 @@
 
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .hero-stats {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .modal-card {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .btn, .chip, .icon-button {
+    padding: 8px 12px;
+    font-size: 0.92rem;
   }
 }
 
@@ -62,5 +87,15 @@
 
   .calendar-toolbar {
     margin-bottom: 6px;
+  }
+
+  .topbar-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .date-pill, .storage-pill {
+    font-size: 0.85rem;
+    padding: 6px 10px;
   }
 }
