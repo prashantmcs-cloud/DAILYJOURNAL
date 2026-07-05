@@ -99,3 +99,42 @@
     padding: 6px 10px;
   }
 }
+
+@media (max-width: 380px) {
+  .app-shell {
+    padding: 8px;
+  }
+
+  .topbar {
+    padding: 12px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+  }
+
+  .layout {
+    gap: 12px;
+  }
+
+  .sidebar {
+    gap: 10px;
+  }
+
+  .btn, .chip, .icon-button {
+    padding: 6px 10px;
+    font-size: 0.82rem;
+  }
+
+  .section-header {
+    margin-bottom: 12px;
+    gap: 8px;
+  }
+
+  .grid {
+    gap: 10px;
+  }
+
+  .modal-card {
+    padding: 12px;
+    border-radius: 16px;
+  }
+}
