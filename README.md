@@ -15,7 +15,7 @@ Reflect Journal is a fully responsive daily journal and mood tracker built with 
 - css/ for stylesheets
 - js/ for modular application logic
 - assets/ for icons, images, and fonts
-- testcases/ for AI-Driven Synthetic Monitoring MVP
+- testcases/ for AI-Driven Synthetic Monitoring 
 
 ## Installation
 1. Open the project folder in your browser, or run a local static server.
