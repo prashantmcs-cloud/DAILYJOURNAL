@@ -7,7 +7,7 @@ Verify that a user can open dashboard.
 - Application is running.
 
 ## Steps
-1. Open the login page.
+Open the login page.
 
 ## Expected Result
 - Dashboard is displayed correctly.
