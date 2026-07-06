@@ -10,7 +10,7 @@ Verify that a user can open dashboard.
 1. Open the login page.
 
 ## Expected Result
-- Dashboard is displayed.
+- Dashboard is displayed correctly.
 
 ## Priority
 High
