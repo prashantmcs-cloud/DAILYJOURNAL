@@ -1,7 +1,7 @@
 # TC-001: Login with Valid Credentials
 
 ## Objective
-Verify that a user can open dashboard.
+Verify that a user open dashboard.
 
 ## Preconditions
 - Application is running.
