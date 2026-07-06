@@ -19,4 +19,4 @@ High
 Ready
 
 ## Automation
-Nope
+No
