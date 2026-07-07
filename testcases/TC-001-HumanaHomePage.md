@@ -1,16 +1,13 @@
-# TC-001: Login with Valid Credentials
+# TC-001: Humana Home Page
 
 ## Objective
-Browser https://www.humana.com/ and verify that a user open dashboard.
-On page click Your Privacy Choices link
+Browser https://www.humana.com/ 
 
 ## Steps
-Open URL in new browser https://www.humana.com/ and verify that a user open dashboard.
-On page click Your Privacy Choices link
-
+Open URL  https://www.humana.com/ and click help link
 
 ## Expected Result
-- Dashboard is displayed correctly. and click on Privacy Choices link
+- run fast 
 
 ## Priority
 Medium
