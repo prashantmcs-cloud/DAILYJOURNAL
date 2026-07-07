@@ -3,14 +3,14 @@
 ## Objective
 Open URL in new browser https://www.humana.com/ and verify that a user open dashboard.
 On page click Your Privacy Choices link
-## Preconditions
-- Application is running.
 
 ## Steps
-Open the dashboard page.
+Open URL in new browser https://www.humana.com/ and verify that a user open dashboard.
+On page click Your Privacy Choices link
+
 
 ## Expected Result
-- Dashboard is displayed correctly.
+- Dashboard is displayed correctly. and click on Privacy Choices link
 
 ## Priority
 High
