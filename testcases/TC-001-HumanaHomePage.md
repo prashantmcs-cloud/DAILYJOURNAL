@@ -13,7 +13,7 @@ On page click Your Privacy Choices link
 - Dashboard is displayed correctly. and click on Privacy Choices link
 
 ## Priority
-High
+Medium
 
 ## Status
 Ready
